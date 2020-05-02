@@ -2,7 +2,8 @@
   "name": "react-generator-component",
   "displayName": "react-generator-component",
   "description": "",
-  "version": "0.0.1",
+  "publisher": "cyber-fox",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.44.0"
   },
@@ -10,50 +11,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:react-generator-component.createComponent",
-    "onCommand:react-generator-component.createComponentWithState",
-    "onCommand:react-generator-component.createComponentWithStyle",
-    "onCommand:react-generator-component.createComponentWithStateAndStyle"
+    "onCommand:react-generator-component.createComponent"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "react-generator-component.createComponent",
-        "title": "Create component"
-      },
-      {
-        "command": "react-generator-component.createComponentWithState",
-        "title": "Create component with state"
-      },
-      {
-        "command": "react-generator-component.createComponentWithStyle",
-        "title": "Create component with style"
-      },
-      {
-        "command": "react-generator-component.createComponentWithStateAndStyle",
-        "title": "Create component with state and style"
+        "title": "Create React component with folder"
       }
     ],
     "menus": {
       "explorer/context": [
         {
           "command": "react-generator-component.createComponent",
-          "group": "createFileCommands@1",
-          "when": "explorerResourceIsFolder"
-        },
-        {
-          "command": "react-generator-component.createComponentWithState",
-          "group": "createFileCommands@1",
-          "when": "explorerResourceIsFolder"
-        },
-        {
-          "command": "react-generator-component.createComponentWithStyle",
-          "group": "createFileCommands@1",
-          "when": "explorerResourceIsFolder"
-        },
-        {
-          "command": "react-generator-component.createComponentWithStateAndStyle",
           "group": "createFileCommands@1",
           "when": "explorerResourceIsFolder"
         }
