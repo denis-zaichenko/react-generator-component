@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 
-import { VSCode } from "./services/vscode";
+import { VSCode } from "./services/utils/vscode";
 
-import { createComponent } from "./services/commands";
+import { createReactComponent, createRedux } from "./services/commands";
 
 import {
   COMMAND,
@@ -12,28 +12,29 @@ import {
 } from "./constants/data.create-component-directory";
 
 export function activate(context: vscode.ExtensionContext) {
-  const callCreateComponent = VSCode.registerCommand(
+  const callReactComponent = VSCode.registerCommand(
     "createComponent",
-    (args) => {
-      const command = createComponent(args);
-      const fetch = async () => {
-        const type = await VSCode.showDialog(COMMAND);
-        switch (type) {
-          case COMMAND[0]:
-            return command();
-          case COMMAND[1]:
-            return command(IS_WITH_STATE);
-          case COMMAND[2]:
-            return command(IS_WITH_STYLE);
-          case COMMAND[3]:
-            return command(IS_WITH_STATE_STYLE);
-        }
-      };
-      fetch();
+    async (args) => {
+      const command = createReactComponent(args);
+      const type = await VSCode.showDialog(COMMAND);
+      switch (type) {
+        case COMMAND[0]:
+          return command();
+        case COMMAND[1]:
+          return command(IS_WITH_STATE);
+        case COMMAND[2]:
+          return command(IS_WITH_STYLE);
+        case COMMAND[3]:
+          return command(IS_WITH_STATE_STYLE);
+      }
     }
   );
 
-  context.subscriptions.push(callCreateComponent);
+  const callRedux = VSCode.registerCommand("createRedux", (args) => {
+    createRedux(args);
+  });
+
+  context.subscriptions.push(callReactComponent, callRedux);
 }
 
 export function deactivate() {}

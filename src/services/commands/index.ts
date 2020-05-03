@@ -1,1 +1,2 @@
-export * from "./component";
+export * from "./react-component.command";
+export * from "./redux.command";

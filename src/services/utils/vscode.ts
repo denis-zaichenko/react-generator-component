@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-import { PROJECT_NAME } from "../constants/data.vscode";
+const PROJECT_NAME = "react-generator-component";
 
 export const VSCode = {
   createInput: async (placeholder: string) =>

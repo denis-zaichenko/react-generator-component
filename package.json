@@ -3,7 +3,7 @@
   "displayName": "react-generator-component",
   "description": "",
   "publisher": "cyber-fox",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.44.0"
   },
@@ -11,7 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:react-generator-component.createComponent"
+    "onCommand:react-generator-component.createComponent",
+    "onCommand:react-generator-component.createRedux"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -19,12 +20,21 @@
       {
         "command": "react-generator-component.createComponent",
         "title": "Create React component with folder"
+      },
+      {
+        "command": "react-generator-component.createRedux",
+        "title": "Create Redux template"
       }
     ],
     "menus": {
       "explorer/context": [
         {
           "command": "react-generator-component.createComponent",
+          "group": "createFileCommands@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-generator-component.createRedux",
           "group": "createFileCommands@1",
           "when": "explorerResourceIsFolder"
         }

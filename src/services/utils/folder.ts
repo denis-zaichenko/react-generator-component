@@ -1,10 +1,8 @@
 import * as fs from "fs";
 import * as vscode from "vscode";
 import * as path from "path";
-import { paramCase, pascalCase } from "change-case";
 
-export const createComponentName = (path: string) => pascalCase(path);
-export const createFolderName = (path: string) => paramCase(path);
+import { createFolderName } from "./name";
 
 export const createFolder = (targetDir: string) => {
   const { sep } = path;
@@ -46,4 +44,25 @@ export const createFile = async (
       vscode.window.showErrorMessage("Maker cant write to file.");
     }
   });
+};
+
+export const generatorFilePath = (dir: string, name: string) => {
+  const folderName = createFolderName(name);
+  const projectRoot = (vscode.workspace.workspaceFolders as any)[0].uri.fsPath;
+
+  if (!dir.includes(projectRoot)) {
+    dir = projectRoot + dir;
+  }
+  if (dir[dir.length - 1] !== "/") {
+    dir = dir + "\\";
+  }
+  return dir + folderName;
+};
+
+export const generateFolderStructure = (dir: string, name: string) => {
+  const path = generatorFilePath(dir, name);
+  createFolder(path);
+
+  return ({ fileName, template }: ITemplate) =>
+    createFile(`${path}/${fileName}`, template);
 };
