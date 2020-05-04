@@ -10,6 +10,6 @@ export const ${componentName}Styles = {
   Wrapper: styled.div\`\`,
 };
 `.trim(),
-    fileName: `${componentName}.styles.ts`,
+    fileName: `${folderName}.styles.ts`,
   };
 };

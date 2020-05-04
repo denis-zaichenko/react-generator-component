@@ -2,7 +2,7 @@ import { createComponentName } from "../../utils";
 
 const createReact = (componentName: string) =>
   `
-import React, { ReactNode, FC } from 'react';
+import React, { FC } from 'react';
 
 export interface I${componentName}Props {
   className?: string;
@@ -19,7 +19,7 @@ export const ${componentName}: FC<I${componentName}Props> = (props) => {
 
 const createReactStyled = (folderName: string, componentName: string) =>
   `
-import React, { ReactNode, FC } from 'react';
+import React, { FC } from 'react';
 
 import { ${componentName}Styles } from './${folderName}.styles';
 
@@ -38,7 +38,7 @@ export const ${componentName}: FC<I${componentName}Props> = (props) => {
 
 const createReactStyledState = (folderName: string, componentName: string) =>
   `
-import React, { ReactNode, FC } from 'react';
+import React, { FC } from 'react';
 
 import { use${componentName} } from './${folderName}.state';
 
@@ -60,7 +60,7 @@ export const ${componentName}: FC<I${componentName}Props> = (props) => {
 
 const createReactState = (folderName: string, componentName: string) =>
   `
-import React, { ReactNode, FC } from 'react';
+import React, { FC } from 'react';
 
 import { use${componentName} } from './${folderName}.state';
 
@@ -83,7 +83,7 @@ export const createReactTemplate = (
   reactTemplate?: IReactTemplate
 ): ITemplate => {
   const componentName = createComponentName(folderName);
-  const fileName = `${componentName}.tsx`;
+  const fileName = `${folderName}.tsx`;
   if (!reactTemplate) {
     return { template: createReact(componentName), fileName };
   }

@@ -54,7 +54,7 @@ export const generatorFilePath = (dir: string, name: string) => {
     dir = projectRoot + dir;
   }
   if (dir[dir.length - 1] !== "/") {
-    dir = dir + "\\";
+    dir = dir + "/";
   }
   return dir + folderName;
 };
