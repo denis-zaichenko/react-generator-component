@@ -2,16 +2,17 @@ import * as vscode from "vscode";
 
 import { VSCode } from "./services/utils/vscode";
 
-import { createReactComponent, createRedux } from "./services/commands";
+import {
+  createReactComponent,
+  createRedux,
+  createReactFile,
+} from "./services/commands";
 
 export function activate(context: vscode.ExtensionContext) {
   const call = [
-    VSCode.registerCommand("createComponent", (args) => {
-      createReactComponent(args);
-    }),
-    VSCode.registerCommand("createRedux", (args) => {
-      createRedux(args);
-    }),
+    VSCode.registerCommand("createComponent", createReactComponent),
+    VSCode.registerCommand("createRedux", createRedux),
+    VSCode.registerCommand("createReactFile", createReactFile),
   ];
 
   context.subscriptions.push(...call);

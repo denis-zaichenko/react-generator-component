@@ -5,9 +5,9 @@ export const COMMAND = [
   "Create component with state and style",
 ];
 
-export const IS_WITH_STATE: IReactTemplate = { isWithState: true };
-export const IS_WITH_STYLE: IReactTemplate = { isWithStyle: true };
-export const IS_WITH_STATE_STYLE: IReactTemplate = {
+export const STATE: IReactTemplate = { isWithState: true };
+export const STYLE: IReactTemplate = { isWithStyle: true };
+export const STATE_STYLE: IReactTemplate = {
   isWithState: true,
   isWithStyle: true,
 };

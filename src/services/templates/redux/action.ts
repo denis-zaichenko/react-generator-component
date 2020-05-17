@@ -13,7 +13,7 @@ export const ${componentName}Actions = {};
 
 //* Combine all action creator
 type TActionCombiner<T> = T extends { [key: string]: infer U } ? U : never;
-export type T${componentName}Actions = ReturnType<TCombiner<typeof ${componentName}Actions>>;
+export type T${componentName}Actions = ReturnType<TActionCombiner<typeof ${componentName}Actions>>;
 `.trim();
 
   return { template, fileName: `${folderName}.actions.ts` };

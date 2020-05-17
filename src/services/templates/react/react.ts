@@ -1,101 +1,97 @@
 import { createComponentName } from "../../utils";
 
-const createReact = (componentName: string) =>
-  `
-import React, { FC } from 'react';
+type TReactTemplateType = "default" | "state" | "styled" | "styleState";
 
-export interface I${componentName}Props {
-  className?: string;
-}
-
-export const ${componentName}: FC<I${componentName}Props> = (props) => {
-  const { className }= props;
-
+const createReactTypeByTemplate = (
+  template?: IReactTemplate
+): TReactTemplateType => {
+  if (!template) {
+    return "default";
+  }
+  const { isWithState, isWithStyle } = template;
   return (
-    <div className={className}></div>
+    (isWithState && isWithStyle && "styleState") ||
+    (isWithState && "state") ||
+    (isWithStyle && "styled") ||
+    "default"
   );
-}
-`.trim();
-
-const createReactStyled = (folderName: string, componentName: string) =>
-  `
-import React, { FC } from 'react';
-
-import { ${componentName}Styles } from './${folderName}.styles';
-
-export interface I${componentName}Props {
-  className?: string;
-}
-
-export const ${componentName}: FC<I${componentName}Props> = (props) => {
-  const { className }= props;
-
-  return (
-    <${componentName}Styles.Wrapper className={className}></${componentName}Styles.Wrapper>
-  );
-}
-`.trim();
-
-const createReactStyledState = (folderName: string, componentName: string) =>
-  `
-import React, { FC } from 'react';
-
-import { use${componentName} } from './${folderName}.state';
-
-import { ${componentName}Styles } from './${folderName}.styles';
-
-export interface I${componentName}Props {
-  className?: string;
-}
-
-export const ${componentName}: FC<I${componentName}Props> = (props) => {
-  const { className }= props;
-  const {} = use${componentName}();
-
-  return (
-    <${componentName}Styles.Wrapper className={className}></${componentName}Styles.Wrapper>
-  );
-}
-`.trim();
-
-const createReactState = (folderName: string, componentName: string) =>
-  `
-import React, { FC } from 'react';
-
-import { use${componentName} } from './${folderName}.state';
-
-export interface I${componentName}Props {
-  className?: string;
-}
-
-export const ${componentName}: FC<I${componentName}Props> = (props) => {
-  const { className }= props;
-  const {} = use${componentName}();
-
-  return (
-    <div className={className}></div>
-  );
-}
-`.trim();
+};
 
 export const createReactTemplate = (
   folderName: string,
   reactTemplate?: IReactTemplate
-): ITemplate => {
+) => {
   const componentName = createComponentName(folderName);
-  const fileName = `${folderName}.tsx`;
-  if (!reactTemplate) {
-    return { template: createReact(componentName), fileName };
-  }
+  const type = createReactTypeByTemplate(reactTemplate);
 
-  const { isWithState, isWithStyle } = reactTemplate;
-  const template =
-    (isWithState &&
-      isWithStyle &&
-      createReactStyledState(folderName, componentName)) ||
-    (isWithState && createReactState(folderName, componentName)) ||
-    (isWithStyle && createReactStyled(folderName, componentName)) ||
-    createReact(componentName);
+  const template = {
+    default: `
+import React, { FC } from 'react';
 
-  return { template, fileName };
+export interface I${componentName}Props {
+  className?: string;
+}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const { className }= props;
+
+  return (
+    <div className={className}></div>
+  );
+}`,
+    styled: `
+import React, { FC } from 'react';
+
+import { ${componentName}Styles } from './${folderName}.styles';
+
+export interface I${componentName}Props {
+  className?: string;
+}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const { className }= props;
+
+  return (
+    <${componentName}Styles.Wrapper className={className}></${componentName}Styles.Wrapper>
+  );
+}`,
+    state: `
+import React, { FC } from 'react';
+
+import { use${componentName} } from './${folderName}.state';
+
+export interface I${componentName}Props {
+  className?: string;
+}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const { className }= props;
+  const {} = use${componentName}();
+
+  return (
+    <div className={className}></div>
+  );
+}`,
+    styleState: `
+import React, { FC } from 'react';
+
+import { use${componentName} } from './${folderName}.state';
+
+import { ${componentName}Styles } from './${folderName}.styles';
+
+export interface I${componentName}Props {
+  className?: string;
+}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const { className }= props;
+  const {} = use${componentName}();
+
+  return (
+    <${componentName}Styles.Wrapper className={className}></${componentName}Styles.Wrapper>
+  );
+}`,
+  }[type].trim();
+
+  return { template, fileName: `${folderName}.tsx` };
 };

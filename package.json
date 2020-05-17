@@ -12,7 +12,8 @@
   ],
   "activationEvents": [
     "onCommand:react-generator-component.createComponent",
-    "onCommand:react-generator-component.createRedux"
+    "onCommand:react-generator-component.createRedux",
+    "onCommand:react-generator-component.createReactFile"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -24,6 +25,10 @@
       {
         "command": "react-generator-component.createRedux",
         "title": "Create Redux template"
+      },
+      {
+        "command": "react-generator-component.createReactFile",
+        "title": "Create React component"
       }
     ],
     "menus": {
@@ -35,6 +40,11 @@
         },
         {
           "command": "react-generator-component.createRedux",
+          "group": "createFileCommands@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-generator-component.createReactFile",
           "group": "createFileCommands@1",
           "when": "explorerResourceIsFolder"
         }

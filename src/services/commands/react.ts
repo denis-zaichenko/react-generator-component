@@ -1,24 +1,20 @@
-import { VSCode, createFolderName, generateFolderStructure } from "../utils";
-
 import {
-  COMMAND,
-  IS_WITH_STATE,
-  IS_WITH_STYLE,
-  IS_WITH_STATE_STYLE,
-} from "../../constants/data.create-component-directory";
+  VSCode,
+  createFolderName,
+  generateFolderStructure,
+  createFile,
+} from "../utils";
+
+import { COMMAND, STATE, STYLE, STATE_STYLE } from "../../constants";
 
 import { createReactIndex } from "../templates/react/index.template";
 import { createReactTemplate } from "../templates/react/react";
 import { createReactState } from "../templates/react/state";
 import { createReactStyle } from "../templates/react/styles";
 
-interface ICreateFolderParam extends IFolderCommand {
-  template?: IReactTemplate;
-}
-
-const commandCreateComponent = async (params: ICreateFolderParam) => {
-  const { name, dir, template } = params;
-
+const commandCreateComponent = (dir: string, name: string) => async (
+  template?: IReactTemplate
+) => {
   const folderName = createFolderName(name);
   const generateFile = generateFolderStructure(dir, name);
 
@@ -47,25 +43,32 @@ export const createReactComponent = async (args: any) => {
   }
 
   const dir = args.fsPath;
-  const command = (template?: IReactTemplate) =>
-    commandCreateComponent({ dir, name, template });
+  const command = commandCreateComponent(dir, name);
 
   switch (type) {
     case COMMAND[0]: {
-      command();
-      break;
+      return command();
     }
     case COMMAND[1]: {
-      command(IS_WITH_STATE);
-      break;
+      return command(STATE);
     }
     case COMMAND[2]: {
-      command(IS_WITH_STYLE);
-      break;
+      return command(STYLE);
     }
     case COMMAND[3]: {
-      command(IS_WITH_STATE_STYLE);
-      break;
+      return command(STATE_STYLE);
     }
   }
+};
+
+export const createReactFile = async (args: any) => {
+  const name = await VSCode.createInput("Component name");
+
+  if (!name || !args) {
+    return;
+  }
+  const { fileName, template } = createReactTemplate(createFolderName(name));
+  const dir = args.fsPath;
+
+  return createFile(`${dir}/${fileName}`, template);
 };
