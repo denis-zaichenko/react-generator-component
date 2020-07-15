@@ -3,7 +3,7 @@
   "displayName": "react-generator-component",
   "description": "",
   "publisher": "cyber-fox",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "engines": {
     "vscode": "^1.44.0"
   },
@@ -12,6 +12,7 @@
   ],
   "activationEvents": [
     "onCommand:react-generator-component.createComponent",
+    "onCommand:react-generator-component.createComponentWithProps",
     "onCommand:react-generator-component.createRedux",
     "onCommand:react-generator-component.createReactFile"
   ],
@@ -20,7 +21,11 @@
     "commands": [
       {
         "command": "react-generator-component.createComponent",
-        "title": "Create React component with folder"
+        "title": "Create React template"
+      },
+      {
+        "command": "react-generator-component.createComponentWithProps",
+        "title": "Create React template with props"
       },
       {
         "command": "react-generator-component.createRedux",
@@ -35,6 +40,11 @@
       "explorer/context": [
         {
           "command": "react-generator-component.createComponent",
+          "group": "createFileCommands@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-generator-component.createComponentWithProps",
           "group": "createFileCommands@1",
           "when": "explorerResourceIsFolder"
         },

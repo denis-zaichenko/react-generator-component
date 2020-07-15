@@ -4,16 +4,14 @@ export const createReactState = (folderName: string): ITemplate => {
   const componentName = createComponentName(folderName);
   return {
     template: `
-import { useState } from 'react';
+import { useUpdateState } from 'services/hooks';
 
 interface I${componentName}StateDate {}
 
-interface I${componentName}State extends I${componentName}StateDate {}
+const INITIAL_STATE: I${componentName}StateDate = {};
 
-const initState: I${componentName}StateDate = {};
-
-export const use${componentName} = (): I${componentName}State => {
-  const [state, setState] = useState<I${componentName}StateDate>(initState);
+export const use${componentName} = () => {
+  const { state, updateState } = useUpdateState(INITIAL_STATE);
 
   return { ...state };
 };`.trim(),

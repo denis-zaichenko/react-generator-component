@@ -6,11 +6,16 @@ import {
   createReactComponent,
   createRedux,
   createReactFile,
+  createReactWithPropsComponent,
 } from "./services/commands";
 
 export function activate(context: vscode.ExtensionContext) {
   const call = [
     VSCode.registerCommand("createComponent", createReactComponent),
+    VSCode.registerCommand(
+      "createComponentWithProps",
+      createReactWithPropsComponent
+    ),
     VSCode.registerCommand("createRedux", createRedux),
     VSCode.registerCommand("createReactFile", createReactFile),
   ];

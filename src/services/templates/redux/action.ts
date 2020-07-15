@@ -5,11 +5,22 @@ export const createReduxAction = (folderName: string): ITemplate => {
   const componentName = createComponentName(folderName);
 
   const template = `
+import { action } from 'services/utils';
+
 import { ${constantsName}_ACTION } from './${folderName}.constants';
 
-const {} = ${constantsName}_ACTION;
+import { I${componentName}Redux } from './${folderName}.typings';
 
-export const ${componentName}Actions = {};
+const {
+  CLEAR,
+  UPDATE_FIELDS
+} = ${constantsName}_ACTION;
+
+export const ${componentName}Actions = {
+  clear = () => action(CLEAR),
+  updateFields = (payload: Partial<I${componentName}Redux>) => 
+    action(UPDATE_FIELDS, payload),
+};
 
 //* Combine all action creator
 type TActionCombiner<T> = T extends { [key: string]: infer U } ? U : never;

@@ -5,11 +5,12 @@ export const createReduxConstants = (folderName: string): ITemplate => {
   const componentName = createComponentName(folderName);
 
   const template = `
-export const ${constantsName}_ACTION = <const>{};
+export const ${constantsName}_ACTION = <const>{
+  CLEAR: "@${constantsName}/CLEAR",
+  UPDATE_FIELDS: "@${constantsName}/UPDATE_FIELDS",
+};
   
 export interface I${componentName}Redux {}
-  
-export type I${componentName}ReduxKeys = keyof I${componentName}Redux;
   
 export const INIT_REDUX_${constantsName}: I${componentName}Redux = {};
 `.trim();
