@@ -9,6 +9,8 @@ export const REACT_FILE_TEMPLATE = [
   "Create component",
   "Create state",
   "Create style",
+  "Create string",
+  "Create types",
 ];
 
 export const STATE: IReactTemplate = { isWithState: true };

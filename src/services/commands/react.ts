@@ -18,6 +18,9 @@ import { createReactTemplate } from "../templates/react/react";
 import { createReactWithPropsTemplate } from "../templates/react/react-with-props";
 import { createReactState } from "../templates/react/state";
 import { createReactStyle } from "../templates/react/styles";
+import { getNameByPath } from "../utils/create-components";
+import { createStringsFile } from "../templates/component/strings";
+import { createTypesFile } from "../templates/component/types";
 
 type TGenerateReact = (
   folderName: string,
@@ -83,19 +86,23 @@ export const createReactWithPropsComponent = createReactTemplateComponent(
 );
 
 export const createReactFile = async (args: any) => {
+  if (!args) {
+    return;
+  }
+
+  const dir = args.fsPath;
   const type = await VSCode.showDialog(REACT_FILE_TEMPLATE);
-  const name = await VSCode.createInput("Component name");
+  const name = await getNameByPath(dir, type, [REACT_FILE_TEMPLATE[0]]);
 
-  console.log(type, name);
-
-  if (!name || !args) {
+  if (!name) {
     return;
   }
 
   const folderName = createFolderName(name);
-  let data: ITemplate = { fileName: "", template: "" };
+  let data: ITemplate;
 
   switch (type) {
+    default:
     case REACT_FILE_TEMPLATE[0]: {
       data = createReactTemplate(folderName);
       break;
@@ -108,11 +115,16 @@ export const createReactFile = async (args: any) => {
       data = createReactStyle(folderName);
       break;
     }
+    case REACT_FILE_TEMPLATE[3]: {
+      data = createStringsFile(folderName);
+      break;
+    }
+    case REACT_FILE_TEMPLATE[4]: {
+      data = createTypesFile(folderName);
+      break;
+    }
   }
-  console.log(data);
 
   const { fileName, template } = data;
-  const dir = args.fsPath;
-
   return createFile(`${dir}/${fileName}`, template);
 };

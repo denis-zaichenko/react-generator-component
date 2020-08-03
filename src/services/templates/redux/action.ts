@@ -1,8 +1,9 @@
-import { createConstantName, createComponentName } from "../../utils";
+import { createName } from "../../utils";
 
 export const createReduxAction = (folderName: string): ITemplate => {
-  const constantsName = createConstantName(folderName);
-  const componentName = createComponentName(folderName);
+  const getName = createName(folderName);
+  const constantsName = getName.constant();
+  const componentName = getName.component();
 
   const template = `
 import { action } from 'services/utils';
