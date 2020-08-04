@@ -1,16 +1,17 @@
 export const COMMAND = [
-  "Create component",
-  "Create component with state",
-  "Create component with style",
-  "Create component with state and style",
+  "Only component",
+  "With state",
+  "With style",
+  "With state and style",
 ];
 
 export const REACT_FILE_TEMPLATE = [
-  "Create component",
-  "Create state",
-  "Create style",
-  "Create string",
-  "Create types",
+  "Component",
+  "State",
+  "Style",
+  "String",
+  "Types",
+  "Constants",
 ];
 
 export const STATE: IReactTemplate = { isWithState: true };

@@ -1,26 +1,23 @@
+import { createReactIndex } from '../templates/react/index.template';
 import {
-  VSCode,
-  createFolderName,
-  generateFolderStructure,
-  createFile,
-} from "../utils";
+  createConstantsFile, createStringsFile, createTypesFile
+} from '../templates/react/oters';
+import { createReactTemplate } from '../templates/react/react';
+import {
+  createReactWithPropsTemplate
+} from '../templates/react/react-with-props';
+import { getNameByPath } from '../utils/create-components';
+
+import { createReactState } from '../templates/react/state';
+import {
+  createFile, createFolderName, generateFolderStructure, VSCode
+} from '../utils';
 
 import {
-  COMMAND,
-  STATE,
-  STYLE,
-  STATE_STYLE,
-  REACT_FILE_TEMPLATE,
-} from "../../constants";
+  COMMAND, REACT_FILE_TEMPLATE, STATE, STATE_STYLE, STYLE
+} from '../../constants';
 
-import { createReactIndex } from "../templates/react/index.template";
-import { createReactTemplate } from "../templates/react/react";
-import { createReactWithPropsTemplate } from "../templates/react/react-with-props";
-import { createReactState } from "../templates/react/state";
-import { createReactStyle } from "../templates/react/styles";
-import { getNameByPath } from "../utils/create-components";
-import { createStringsFile } from "../templates/component/strings";
-import { createTypesFile } from "../templates/component/types";
+import { createReactStyle } from '../templates/react/styles';
 
 type TGenerateReact = (
   folderName: string,
@@ -121,6 +118,10 @@ export const createReactFile = async (args: any) => {
     }
     case REACT_FILE_TEMPLATE[4]: {
       data = createTypesFile(folderName);
+      break;
+    }
+    case REACT_FILE_TEMPLATE[6]: {
+      data = createConstantsFile(folderName);
       break;
     }
   }
