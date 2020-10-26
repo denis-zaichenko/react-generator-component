@@ -1,10 +1,14 @@
-import { createComponentName } from "../../utils";
-import { createReactTypeByTemplate } from "./react";
+import { createComponentName, importTheme } from '../../utils';
+
+import { createReactTypeByTemplate } from './react';
 
 export const createReactWithPropsTemplate = (
-  folderName: string,
-  reactTemplate?: IReactTemplate
-) => {
+  optional: {
+    reactTemplate?: IReactTemplate;
+    isNative?: boolean;
+  } = {}
+) => (folderName: string) => {
+  const { isNative, reactTemplate } = optional;
   const componentName = createComponentName(folderName);
   const type = createReactTypeByTemplate(reactTemplate);
 
@@ -12,11 +16,9 @@ export const createReactWithPropsTemplate = (
     default: `
 import React, { FC } from 'react';
 
-import { Theme } from 'themes';
+${importTheme(isNative)}
 
-export interface I${componentName}Props {
-
-}
+export interface I${componentName}Props {}
 
 export const ${componentName}: FC<I${componentName}Props> = (props) => {
   const {} = props;
@@ -30,9 +32,7 @@ import React, { FC } from 'react';
 
 import { ${componentName}Styles } from './${folderName}.styles';
 
-export interface I${componentName}Props {
-
-}
+export interface I${componentName}Props {}
 
 export const ${componentName}: FC<I${componentName}Props> = (props) => {
   const {} = props;
@@ -43,17 +43,15 @@ export const ${componentName}: FC<I${componentName}Props> = (props) => {
     state: `
 import React, { FC } from 'react';
 
-import { use${componentName} } from './${folderName}.state';
+import { use${componentName}State } from './${folderName}.state';
 
-import { Theme } from 'themes';
+${importTheme(isNative)}
 
-export interface I${componentName}Props {
-
-}
+export interface I${componentName}Props {}
 
 export const ${componentName}: FC<I${componentName}Props> = (props) => {
   const {} = props;
-  const {} = use${componentName}();
+  const {} = use${componentName}State();
 
   return (
     <Theme.Wrapper></Theme.Wrapper>
@@ -62,17 +60,15 @@ export const ${componentName}: FC<I${componentName}Props> = (props) => {
     styleState: `
 import React, { FC } from 'react';
 
-import { use${componentName} } from './${folderName}.state';
+import { use${componentName}State } from './${folderName}.state';
 
 import { ${componentName}Styles } from './${folderName}.styles';
 
-export interface I${componentName}Props {
-
-}
+export interface I${componentName}Props {}
 
 export const ${componentName}: FC<I${componentName}Props> = (props) => {
   const {} = props;
-  const {} = use${componentName}();
+  const {} = use${componentName}State();
 
   return (
     <${componentName}Styles.Wrapper></${componentName}Styles.Wrapper>

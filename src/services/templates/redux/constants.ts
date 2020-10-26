@@ -1,4 +1,4 @@
-import { createName } from "../../utils";
+import { createName } from '../../utils';
 
 export const createReduxConstants = (folderName: string): ITemplate => {
   const getName = createName(folderName);
@@ -6,10 +6,7 @@ export const createReduxConstants = (folderName: string): ITemplate => {
   const componentName = getName.component();
 
   const template = `
-export const ${constantsName}_ACTION = <const>{
-  CLEAR: "@${constantsName}/CLEAR",
-  UPDATE_FIELDS: "@${constantsName}/UPDATE_FIELDS",
-};
+export const ${constantsName}_ACTION = <const>{};
   
 export interface I${componentName}Redux {}
   

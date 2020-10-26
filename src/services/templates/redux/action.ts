@@ -1,26 +1,21 @@
-import { createName } from "../../utils";
+import { addNativeImport, createName } from '../../utils';
 
-export const createReduxAction = (folderName: string): ITemplate => {
+export const createReduxAction = (
+  folderName: string,
+  isNative?: boolean
+): ITemplate => {
   const getName = createName(folderName);
   const constantsName = getName.constant();
   const componentName = getName.component();
 
   const template = `
-import { action } from 'services/utils';
+import { action } from ${addNativeImport("services/utils", isNative)}
 
 import { ${constantsName}_ACTION } from './${folderName}.constants';
 
-import { I${componentName}Redux } from './${folderName}.typings';
-
-const {
-  CLEAR,
-  UPDATE_FIELDS
-} = ${constantsName}_ACTION;
+const {} = ${constantsName}_ACTION;
 
 export const ${componentName}Actions = {
-  clear = () => action(CLEAR),
-  updateFields = (payload: Partial<I${componentName}Redux>) => 
-    action(UPDATE_FIELDS, payload),
 };
 
 //* Combine all action creator

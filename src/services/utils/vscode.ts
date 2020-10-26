@@ -1,4 +1,4 @@
-import { window, commands } from "vscode";
+import { commands, window } from 'vscode';
 
 export const VSCode = {
   createInput: async (placeholder: string) =>
@@ -10,8 +10,19 @@ export const VSCode = {
 
   showBox: (text: string) => window.showInformationMessage(text),
 
-  registerCommand: (name: string, callback: (args: any) => void) =>
-    commands.registerCommand(`react-generator-component.${name}`, callback),
+  registerCommand: (
+    name: string,
+    callback: (args: any) => void,
+    isNative?: boolean
+  ) =>
+    commands.registerCommand(
+      `${
+        isNative
+          ? "react-native-generator-component"
+          : "react-generator-component"
+      }.${name}`,
+      callback
+    ),
 
   showDialog: async (items: string[], defaultItem = items[0]) =>
     (await window.showQuickPick(items, { canPickMany: false })) ?? defaultItem,

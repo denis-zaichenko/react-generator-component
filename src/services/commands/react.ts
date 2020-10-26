@@ -1,17 +1,14 @@
-import { createReactIndex } from '../templates/react/index.template';
+import { createReactState } from '../templates/react/state';
 import {
-  createConstantsFile, createStringsFile, createTypesFile
-} from '../templates/react/oters';
+  createFile, createFolderName, generateFolderStructure, VSCode
+} from '../utils';
+
+import { createReactIndex } from '../templates/react/index.template';
 import { createReactTemplate } from '../templates/react/react';
 import {
   createReactWithPropsTemplate
 } from '../templates/react/react-with-props';
 import { getNameByPath } from '../utils/create-components';
-
-import { createReactState } from '../templates/react/state';
-import {
-  createFile, createFolderName, generateFolderStructure, VSCode
-} from '../utils';
 
 import {
   COMMAND, REACT_FILE_TEMPLATE, STATE, STATE_STYLE, STYLE
@@ -24,9 +21,13 @@ type TGenerateReact = (
   reactTemplate?: IReactTemplate | undefined
 ) => ITemplate;
 
-const commandCreateComponent = (dir: string, name: string) => (
-  reactTemplateFunction: TGenerateReact
-) => async (template?: IReactTemplate) => {
+const commandCreateComponent = (
+  dir: string,
+  name: string,
+  isNative?: boolean
+) => (reactTemplateFunction: TGenerateReact) => async (
+  template?: IReactTemplate
+) => {
   const folderName = createFolderName(name);
   const generateFile = generateFolderStructure(dir, name);
 
@@ -39,16 +40,17 @@ const commandCreateComponent = (dir: string, name: string) => (
 
   const { isWithState, isWithStyle } = template;
   if (isWithState) {
-    await generateFile(createReactState(folderName));
+    await generateFile(createReactState(folderName, isNative));
   }
   if (isWithStyle) {
-    await generateFile(createReactStyle(folderName));
+    await generateFile(createReactStyle(folderName, isNative));
   }
 };
 
-const createReactTemplateComponent = (createTemplate: TGenerateReact) => async (
-  args: any
-) => {
+const createReactTemplateComponent = (
+  isNative: boolean,
+  createTemplate: TGenerateReact
+) => async (args: any) => {
   const type = await VSCode.showDialog(COMMAND);
   const name = await VSCode.createInput("Component name");
 
@@ -57,7 +59,7 @@ const createReactTemplateComponent = (createTemplate: TGenerateReact) => async (
   }
 
   const dir = args.fsPath;
-  const command = commandCreateComponent(dir, name)(createTemplate);
+  const command = commandCreateComponent(dir, name, isNative)(createTemplate);
 
   switch (type) {
     case COMMAND[0]: {
@@ -75,14 +77,15 @@ const createReactTemplateComponent = (createTemplate: TGenerateReact) => async (
   }
 };
 
-export const createReactComponent = createReactTemplateComponent(
-  createReactTemplate
-);
-export const createReactWithPropsComponent = createReactTemplateComponent(
-  createReactWithPropsTemplate
-);
+export const createReactComponent = (isNative: boolean) =>
+  createReactTemplateComponent(isNative, createReactTemplate({ isNative }));
+export const createReactWithPropsComponent = (isNative: boolean) =>
+  createReactTemplateComponent(
+    isNative,
+    createReactWithPropsTemplate({ isNative })
+  );
 
-export const createReactFile = async (args: any) => {
+export const createReactFile = (isNative: boolean) => async (args: any) => {
   if (!args) {
     return;
   }
@@ -101,27 +104,15 @@ export const createReactFile = async (args: any) => {
   switch (type) {
     default:
     case REACT_FILE_TEMPLATE[0]: {
-      data = createReactTemplate(folderName);
+      data = createReactTemplate({ isNative })(folderName);
       break;
     }
     case REACT_FILE_TEMPLATE[1]: {
-      data = createReactState(folderName);
+      data = createReactState(folderName, isNative);
       break;
     }
     case REACT_FILE_TEMPLATE[2]: {
-      data = createReactStyle(folderName);
-      break;
-    }
-    case REACT_FILE_TEMPLATE[3]: {
-      data = createStringsFile(folderName);
-      break;
-    }
-    case REACT_FILE_TEMPLATE[4]: {
-      data = createTypesFile(folderName);
-      break;
-    }
-    case REACT_FILE_TEMPLATE[6]: {
-      data = createConstantsFile(folderName);
+      data = createReactStyle(folderName, isNative);
       break;
     }
   }

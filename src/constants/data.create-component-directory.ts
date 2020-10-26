@@ -5,14 +5,7 @@ export const COMMAND = [
   "With state and style",
 ];
 
-export const REACT_FILE_TEMPLATE = [
-  "Component",
-  "State",
-  "Style",
-  "String",
-  "Types",
-  "Constants",
-];
+export const REACT_FILE_TEMPLATE = ["Component", "State", "Style"];
 
 export const STATE: IReactTemplate = { isWithState: true };
 export const STYLE: IReactTemplate = { isWithStyle: true };

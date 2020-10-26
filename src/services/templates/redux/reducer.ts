@@ -1,4 +1,4 @@
-import { createName } from "../../utils";
+import { createName } from '../../utils';
 
 export const createReduxReducer = (folderName: string): ITemplate => {
   const getName = createName(folderName);
@@ -14,24 +14,13 @@ import {
 
 import { T${componentName}Actions } from './${folderName}.actions';
 
-const {
-  CLEAR,
-  UPDATE_FIELDS
-} = ${constantsName}_ACTION;
+const {} = ${constantsName}_ACTION;
 
 export const reducer${componentName} = (
   state = INIT_REDUX_${constantsName},
   action: T${componentName}Actions
 ): I${componentName}Redux => {
   switch (action.type) {
-
-    case CLEAR: {
-      return INIT_REDUX_${constantsName};
-    }
-
-    case UPDATE_FIELDS: {
-      return {...state, ...action.payload};
-    }
 
     default:
       return state ?? INIT_REDUX_${constantsName};

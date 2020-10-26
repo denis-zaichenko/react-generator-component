@@ -14,26 +14,46 @@
     "onCommand:react-generator-component.createComponent",
     "onCommand:react-generator-component.createComponentWithProps",
     "onCommand:react-generator-component.createRedux",
-    "onCommand:react-generator-component.createReactFile"
+    "onCommand:react-generator-component.createReactFile",
+    "onCommand:react-native-generator-component.createComponent",
+    "onCommand:react-native-generator-component.createComponentWithProps",
+    "onCommand:react-native-generator-component.createRedux",
+    "onCommand:react-native-generator-component.createReactFile"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "react-generator-component.createComponent",
-        "title": "Create React template"
+        "title": "React template"
       },
       {
         "command": "react-generator-component.createComponentWithProps",
-        "title": "Create React template with props"
+        "title": "React props template "
       },
       {
         "command": "react-generator-component.createRedux",
-        "title": "Create Redux template"
+        "title": "Redux"
       },
       {
         "command": "react-generator-component.createReactFile",
-        "title": "Create React component"
+        "title": "Component"
+      },
+      {
+        "command": "react-native-generator-component.createComponent",
+        "title": "NReact template"
+      },
+      {
+        "command": "react-native-generator-component.createComponentWithProps",
+        "title": "NReact props template"
+      },
+      {
+        "command": "react-native-generator-component.createRedux",
+        "title": "NRedux"
+      },
+      {
+        "command": "react-native-generator-component.createReactFile",
+        "title": "NComponent"
       }
     ],
     "menus": {
@@ -56,6 +76,26 @@
         {
           "command": "react-generator-component.createReactFile",
           "group": "createFileCommands@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-native-generator-component.createComponent",
+          "group": "createFileCommandsNative@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-native-generator-component.createComponentWithProps",
+          "group": "createFileCommandsNative@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-native-generator-component.createRedux",
+          "group": "createFileCommandsNative@1",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "react-native-generator-component.createReactFile",
+          "group": "createFileCommandsNative@1",
           "when": "explorerResourceIsFolder"
         }
       ]

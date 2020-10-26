@@ -1,26 +1,34 @@
-import * as vscode from "vscode";
-
-import { VSCode } from "./services/utils/vscode";
+import * as vscode from 'vscode';
 
 import {
-  createReactComponent,
-  createRedux,
-  createReactFile,
-  createReactWithPropsComponent,
-} from "./services/commands";
+  createReactComponent, createReactFile, createReactWithPropsComponent,
+  createRedux
+} from './services/commands';
+import { VSCode } from './services/utils/vscode';
 
 export function activate(context: vscode.ExtensionContext) {
   const call = [
-    VSCode.registerCommand("createComponent", createReactComponent),
+    VSCode.registerCommand("createComponent", createReactComponent(false)),
     VSCode.registerCommand(
       "createComponentWithProps",
-      createReactWithPropsComponent
+      createReactWithPropsComponent(false)
     ),
-    VSCode.registerCommand("createRedux", createRedux),
-    VSCode.registerCommand("createReactFile", createReactFile),
+    VSCode.registerCommand("createRedux", createRedux(false)),
+    VSCode.registerCommand("createReactFile", createReactFile(false)),
   ];
 
-  context.subscriptions.push(...call);
+  const native = [
+    VSCode.registerCommand("createComponent", createReactComponent(true), true),
+    VSCode.registerCommand(
+      "createComponentWithProps",
+      createReactWithPropsComponent(true),
+      true
+    ),
+    VSCode.registerCommand("createReactFile", createReactFile(true), true),
+    VSCode.registerCommand("createRedux", createRedux(true), true),
+  ];
+
+  context.subscriptions.push(...call, ...native);
 }
 
 export function deactivate() {}

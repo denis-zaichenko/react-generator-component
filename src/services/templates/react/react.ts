@@ -1,4 +1,4 @@
-import { createComponentName } from "../../utils";
+import { createComponentName, importTheme } from '../../utils';
 
 export type TReactTemplateType = "default" | "state" | "styled" | "styleState";
 
@@ -18,9 +18,12 @@ export const createReactTypeByTemplate = (
 };
 
 export const createReactTemplate = (
-  folderName: string,
-  reactTemplate?: IReactTemplate
-) => {
+  optional: {
+    reactTemplate?: IReactTemplate;
+    isNative?: boolean;
+  } = {}
+) => (folderName: string) => {
+  const { isNative, reactTemplate } = optional;
   const componentName = createComponentName(folderName);
   const type = createReactTypeByTemplate(reactTemplate);
 
@@ -28,7 +31,7 @@ export const createReactTemplate = (
     default: `
 import React, { FC } from 'react';
 
-import { Theme } from 'themes';
+${importTheme(isNative)}
 
 export const ${componentName}: FC = () => {
   return (
@@ -48,12 +51,12 @@ export const ${componentName}: FC = () => {
     state: `
 import React, { FC } from 'react';
 
-import { use${componentName} } from './${folderName}.state';
+import { use${componentName}State } from './${folderName}.state';
 
-import { Theme } from 'themes';
+${importTheme(isNative)}
 
 export const ${componentName}: FC = () => {
-  const {} = use${componentName}();
+  const {} = use${componentName}State();
 
   return (
     <Theme.Wrapper></Theme.Wrapper>
@@ -62,12 +65,12 @@ export const ${componentName}: FC = () => {
     styleState: `
 import React, { FC } from 'react';
 
-import { use${componentName} } from './${folderName}.state';
+import { use${componentName}State } from './${folderName}.state';
 
 import { ${componentName}Styles } from './${folderName}.styles';
 
 export const ${componentName}: FC = () => {
-  const {} = use${componentName}();
+  const {} = use${componentName}State();
 
   return (
     <${componentName}Styles.Wrapper></${componentName}Styles.Wrapper>
