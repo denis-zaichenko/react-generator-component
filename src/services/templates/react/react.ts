@@ -1,4 +1,6 @@
-import { createComponentName, importTheme } from '../../utils';
+import { createComponentName } from '../../utils';
+
+import { createComponent } from './component';
 
 export type TReactTemplateType = "default" | "state" | "styled" | "styleState";
 
@@ -24,59 +26,17 @@ export const createReactTemplate = (
   } = {}
 ) => (folderName: string) => {
   const { isNative, reactTemplate } = optional;
-  const componentName = createComponentName(folderName);
+  const name = createComponentName(folderName);
   const type = createReactTypeByTemplate(reactTemplate);
 
+  const pattern = createComponent({ folderName, isNative, name });
+
   const template = {
-    default: `
-import React, { FC } from 'react';
-
-${importTheme(isNative)}
-
-export const ${componentName}: FC = () => {
-  return (
-    <Theme.Wrapper></Theme.Wrapper>
-  );
-}`,
-    styled: `
-import React, { FC } from 'react';
-
-import { ${componentName}Styles } from './${folderName}.styles';
-
-export const ${componentName}: FC = () => {
-  return (
-    <${componentName}Styles.Wrapper></${componentName}Styles.Wrapper>
-  );
-}`,
-    state: `
-import React, { FC } from 'react';
-
-import { use${componentName}State } from './${folderName}.state';
-
-${importTheme(isNative)}
-
-export const ${componentName}: FC = () => {
-  const {} = use${componentName}State();
-
-  return (
-    <Theme.Wrapper></Theme.Wrapper>
-  );
-}`,
-    styleState: `
-import React, { FC } from 'react';
-
-import { use${componentName}State } from './${folderName}.state';
-
-import { ${componentName}Styles } from './${folderName}.styles';
-
-export const ${componentName}: FC = () => {
-  const {} = use${componentName}State();
-
-  return (
-    <${componentName}Styles.Wrapper></${componentName}Styles.Wrapper>
-  );
-}`,
-  }[type].trim();
+    default: pattern({ isState: false, isStyled: false }),
+    styled: pattern({ isState: false, isStyled: true }),
+    state: pattern({ isState: true, isStyled: false }),
+    styleState: pattern({ isState: true, isStyled: true }),
+  }[type];
 
   return { template, fileName: `${folderName}.tsx` };
 };

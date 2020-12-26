@@ -1,7 +1,7 @@
-import { createName } from '../../utils';
+import { createNameGroup } from '../../utils';
 
 export const createReduxReducer = (folderName: string): ITemplate => {
-  const getName = createName(folderName);
+  const getName = createNameGroup(folderName);
   const constantsName = getName.constant();
   const componentName = getName.component();
 

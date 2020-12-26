@@ -1,10 +1,10 @@
-import { addNativeImport, createName } from '../../utils';
+import { addNativeImport, createNameGroup } from '../../utils';
 
 export const createReduxAction = (
   folderName: string,
   isNative?: boolean
 ): ITemplate => {
-  const getName = createName(folderName);
+  const getName = createNameGroup(folderName);
   const constantsName = getName.constant();
   const componentName = getName.component();
 

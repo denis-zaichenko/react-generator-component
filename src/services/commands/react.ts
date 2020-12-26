@@ -11,23 +11,15 @@ import {
 import { getNameByPath } from '../utils/create-components';
 
 import {
-  COMMAND, REACT_FILE_TEMPLATE, STATE, STATE_STYLE, STYLE
+  COMMAND, REACT_FILE_TEMPLATE, REACT_TYPE, STATE, STATE_STYLE, STYLE
 } from '../../constants';
 
 import { createReactStyle } from '../templates/react/styles';
 
-type TGenerateReact = (
-  folderName: string,
-  reactTemplate?: IReactTemplate | undefined
-) => ITemplate;
-
-const commandCreateComponent = (
-  dir: string,
-  name: string,
-  isNative?: boolean
-) => (reactTemplateFunction: TGenerateReact) => async (
+const generateComponent = (parameters: ICreateComponentParameters) => async (
   template?: IReactTemplate
 ) => {
+  const { dir, name, isNative, reactTemplateFunction } = parameters;
   const folderName = createFolderName(name);
   const generateFile = generateFolderStructure(dir, name);
 
@@ -47,9 +39,16 @@ const commandCreateComponent = (
   }
 };
 
+const [
+  ONLY_COMPONENT,
+  COMPONENT_AND_STATE,
+  COMPONENT_AND_STYLE,
+  COMPONENT_WITH_STYLE_AND_STATE,
+] = COMMAND;
+
 const createReactTemplateComponent = (
   isNative: boolean,
-  createTemplate: TGenerateReact
+  reactTemplateFunction: TGenerateReact
 ) => async (args: any) => {
   const type = await VSCode.showDialog(COMMAND);
   const name = await VSCode.createInput("Component name");
@@ -59,40 +58,38 @@ const createReactTemplateComponent = (
   }
 
   const dir = args.fsPath;
-  const command = commandCreateComponent(dir, name, isNative)(createTemplate);
+  const createFiles = generateComponent({
+    dir,
+    name,
+    isNative,
+    reactTemplateFunction,
+  });
 
   switch (type) {
-    case COMMAND[0]: {
-      return command();
+    case ONLY_COMPONENT: {
+      return createFiles();
     }
-    case COMMAND[1]: {
-      return command(STATE);
+    case COMPONENT_AND_STATE: {
+      return createFiles(STATE);
     }
-    case COMMAND[2]: {
-      return command(STYLE);
+    case COMPONENT_AND_STYLE: {
+      return createFiles(STYLE);
     }
-    case COMMAND[3]: {
-      return command(STATE_STYLE);
+    case COMPONENT_WITH_STYLE_AND_STATE: {
+      return createFiles(STATE_STYLE);
     }
   }
 };
 
-export const createReactComponent = (isNative: boolean) =>
-  createReactTemplateComponent(isNative, createReactTemplate({ isNative }));
-export const createReactWithPropsComponent = (isNative: boolean) =>
-  createReactTemplateComponent(
-    isNative,
-    createReactWithPropsTemplate({ isNative })
-  );
-
 export const createReactFile = (isNative: boolean) => async (args: any) => {
+  const [COMPONENT, STATE, STYLE] = REACT_FILE_TEMPLATE;
   if (!args) {
     return;
   }
 
   const dir = args.fsPath;
   const type = await VSCode.showDialog(REACT_FILE_TEMPLATE);
-  const name = await getNameByPath(dir, type, [REACT_FILE_TEMPLATE[0]]);
+  const name = await getNameByPath(dir, type, [COMPONENT]);
 
   if (!name) {
     return;
@@ -103,15 +100,15 @@ export const createReactFile = (isNative: boolean) => async (args: any) => {
 
   switch (type) {
     default:
-    case REACT_FILE_TEMPLATE[0]: {
+    case COMPONENT: {
       data = createReactTemplate({ isNative })(folderName);
       break;
     }
-    case REACT_FILE_TEMPLATE[1]: {
+    case STATE: {
       data = createReactState(folderName, isNative);
       break;
     }
-    case REACT_FILE_TEMPLATE[2]: {
+    case STYLE: {
       data = createReactStyle(folderName, isNative);
       break;
     }
@@ -119,4 +116,28 @@ export const createReactFile = (isNative: boolean) => async (args: any) => {
 
   const { fileName, template } = data;
   return createFile(`${dir}/${fileName}`, template);
+};
+
+export const reactCommand = (isNative: boolean) => async (args: any[]) => {
+  const [TEMPLATE_TYPE, TEMPLATE_WITH_PROPS_TYPE, FILE_TYPE] = REACT_TYPE;
+  const type = await VSCode.showDialog(REACT_TYPE);
+
+  switch (type) {
+    default:
+    case TEMPLATE_TYPE: {
+      return createReactTemplateComponent(
+        isNative,
+        createReactTemplate({ isNative })
+      )(args);
+    }
+    case TEMPLATE_WITH_PROPS_TYPE: {
+      return createReactTemplateComponent(
+        isNative,
+        createReactWithPropsTemplate({ isNative })
+      )(args);
+    }
+    case FILE_TYPE: {
+      return createReactFile(isNative)(args);
+    }
+  }
 };

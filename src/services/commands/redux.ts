@@ -4,8 +4,10 @@ import {
   createReduxAction, createReduxConstants, createReduxReducer
 } from '../templates/redux';
 
-const commandCreateRedux = async (param: IFolderCommand) => {
-  const { dir, name, isNative } = param;
+import { REDUX_TYPE } from '../../constants';
+
+const commandCreateRedux = async (parameters: IFolderCommand) => {
+  const { dir, name, isNative } = parameters;
 
   const generateFile = generateFolderStructure(dir, name);
   const folderName = createFolderName(name);
@@ -15,8 +17,11 @@ const commandCreateRedux = async (param: IFolderCommand) => {
   await generateFile(createReduxReducer(folderName));
 };
 
-export const createRedux = (isNative?: boolean) => async (args: any) => {
+export const createRedux = async (args: any) => {
+  const [, NATIVE] = REDUX_TYPE;
+  const isNative = (await VSCode.showDialog(REDUX_TYPE)) === NATIVE;
   const name = await VSCode.createInput("Redux name");
+
   if (!name || !args) {
     return;
   }

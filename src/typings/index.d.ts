@@ -13,3 +13,8 @@ interface IFolderCommand {
   name: string;
   isNative?: boolean;
 }
+
+type TGenerateReact = (
+  folderName: string,
+  reactTemplate?: IReactTemplate | undefined
+) => ITemplate;
