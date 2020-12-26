@@ -1,15 +1,15 @@
-import { createConstantName, createComponentName } from "../../utils";
+import { createName } from '../../utils';
 
 export const createReduxReducer = (folderName: string): ITemplate => {
-  const constName = createConstantName(folderName);
-  const componentName = createComponentName(folderName);
-  const constantsName = createConstantName(folderName);
+  const getName = createName(folderName);
+  const constantsName = getName.constant();
+  const componentName = getName.component();
 
   const template = `
 import { 
-  INIT_REDUX_${constName}, 
+  INIT_REDUX_${constantsName}, 
+  ${constantsName}_ACTION, 
   I${componentName}Redux, 
-  ${constantsName}_ACTION 
 } from './${folderName}.constants';
 
 import { T${componentName}Actions } from './${folderName}.actions';
@@ -17,13 +17,13 @@ import { T${componentName}Actions } from './${folderName}.actions';
 const {} = ${constantsName}_ACTION;
 
 export const reducer${componentName} = (
-  state = INIT_REDUX_${constName},
+  state = INIT_REDUX_${constantsName},
   action: T${componentName}Actions
 ): I${componentName}Redux => {
   switch (action.type) {
 
     default:
-      return state ?? INIT_REDUX_${constName};
+      return state ?? INIT_REDUX_${constantsName};
   }
 };
 `.trim();

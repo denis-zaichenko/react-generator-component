@@ -1,15 +1,22 @@
-import { createConstantName, createComponentName } from "../../utils";
+import { addNativeImport, createName } from '../../utils';
 
-export const createReduxAction = (folderName: string): ITemplate => {
-  const constantsName = createConstantName(folderName);
-  const componentName = createComponentName(folderName);
+export const createReduxAction = (
+  folderName: string,
+  isNative?: boolean
+): ITemplate => {
+  const getName = createName(folderName);
+  const constantsName = getName.constant();
+  const componentName = getName.component();
 
   const template = `
+import { action } from ${addNativeImport("services/utils", isNative)}
+
 import { ${constantsName}_ACTION } from './${folderName}.constants';
 
 const {} = ${constantsName}_ACTION;
 
-export const ${componentName}Actions = {};
+export const ${componentName}Actions = {
+};
 
 //* Combine all action creator
 type TActionCombiner<T> = T extends { [key: string]: infer U } ? U : never;

@@ -1,29 +1,26 @@
-import { VSCode, createFolderName, generateFolderStructure } from "../utils";
+import { createFolderName, generateFolderStructure, VSCode } from '../utils';
+
 import {
-  createReduxIndex,
-  createReduxConstants,
-  createReduxAction,
-  createReduxReducer,
-} from "../templates/redux";
+  createReduxAction, createReduxConstants, createReduxReducer
+} from '../templates/redux';
 
 const commandCreateRedux = async (param: IFolderCommand) => {
-  const { dir, name } = param;
+  const { dir, name, isNative } = param;
 
   const generateFile = generateFolderStructure(dir, name);
   const folderName = createFolderName(name);
 
-  await generateFile(createReduxIndex(folderName));
-  await generateFile(createReduxAction(folderName));
+  await generateFile(createReduxAction(folderName, isNative));
   await generateFile(createReduxConstants(folderName));
   await generateFile(createReduxReducer(folderName));
 };
 
-export const createRedux = async (args: any) => {
+export const createRedux = (isNative?: boolean) => async (args: any) => {
   const name = await VSCode.createInput("Redux name");
   if (!name || !args) {
     return;
   }
 
   const dir = args.fsPath;
-  commandCreateRedux({ dir, name });
+  commandCreateRedux({ dir, name, isNative });
 };

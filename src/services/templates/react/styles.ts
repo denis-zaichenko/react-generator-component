@@ -1,13 +1,16 @@
-import { createComponentName } from "../../utils";
+import { createComponentName } from '../../utils';
 
-export const createReactStyle = (folderName: string): ITemplate => {
+export const createReactStyle = (
+  folderName: string,
+  isNative?: boolean
+): ITemplate => {
   const componentName = createComponentName(folderName);
   return {
     template: `
-import styled from 'styled-components';
+import styled from 'styled-components${isNative ? "/native" : ""}';
 
 export const ${componentName}Styles = {
-  Wrapper: styled.div\`\`,
+  Wrapper: styled.${isNative ? "View" : "div"}\`\`,
 };
 `.trim(),
     fileName: `${folderName}.styles.ts`,

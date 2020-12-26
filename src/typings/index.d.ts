@@ -11,4 +11,5 @@ interface ITemplate {
 interface IFolderCommand {
   dir: string;
   name: string;
+  isNative?: boolean;
 }

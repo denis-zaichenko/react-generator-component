@@ -1,23 +1,8 @@
 import { createComponentName, importTheme } from '../../utils';
 
-export type TReactTemplateType = "default" | "state" | "styled" | "styleState";
+import { createReactTypeByTemplate } from './react';
 
-export const createReactTypeByTemplate = (
-  template?: IReactTemplate
-): TReactTemplateType => {
-  if (!template) {
-    return "default";
-  }
-  const { isWithState, isWithStyle } = template;
-  return (
-    (isWithState && isWithStyle && "styleState") ||
-    (isWithState && "state") ||
-    (isWithStyle && "styled") ||
-    "default"
-  );
-};
-
-export const createReactTemplate = (
+export const createReactWithPropsTemplate = (
   optional: {
     reactTemplate?: IReactTemplate;
     isNative?: boolean;
@@ -33,7 +18,11 @@ import React, { FC } from 'react';
 
 ${importTheme(isNative)}
 
-export const ${componentName}: FC = () => {
+export interface I${componentName}Props {}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const {} = props;
+
   return (
     <Theme.Wrapper></Theme.Wrapper>
   );
@@ -43,7 +32,10 @@ import React, { FC } from 'react';
 
 import { ${componentName}Styles } from './${folderName}.styles';
 
-export const ${componentName}: FC = () => {
+export interface I${componentName}Props {}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const {} = props;
   return (
     <${componentName}Styles.Wrapper></${componentName}Styles.Wrapper>
   );
@@ -55,7 +47,10 @@ import { use${componentName}State } from './${folderName}.state';
 
 ${importTheme(isNative)}
 
-export const ${componentName}: FC = () => {
+export interface I${componentName}Props {}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const {} = props;
   const {} = use${componentName}State();
 
   return (
@@ -69,7 +64,10 @@ import { use${componentName}State } from './${folderName}.state';
 
 import { ${componentName}Styles } from './${folderName}.styles';
 
-export const ${componentName}: FC = () => {
+export interface I${componentName}Props {}
+
+export const ${componentName}: FC<I${componentName}Props> = (props) => {
+  const {} = props;
   const {} = use${componentName}State();
 
   return (
